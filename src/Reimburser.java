@@ -5,11 +5,10 @@ import java.util.*;
 
 public class Reimburser {
 
-
     // "calendar" mapping Dates to project days (low cost/ high cost, travel/ full)
-    private static Map<LocalDate, ProjectDay> calendar = new TreeMap<>();
+    private final Map<LocalDate, ProjectDay> calendar = new TreeMap<>();
 
-    public static int reimburse(Project[] projects) {
+    public int reimburse(Project[] projects) {
 
         for (Project project : projects) {
 
@@ -33,15 +32,12 @@ public class Reimburser {
                 addFullDay(projectCost, tempDate);
                 tempDate = tempDate.plusDays(1);
             }
-
         }
-
         return getTotal();
-
     }
 
     // add the first day of a project (could be at travel rate OR full rate, depending on project length)
-    private static void addFirstDay(Cost cost, DayType dayType, LocalDate date) {
+    private void addFirstDay(Cost cost, DayType dayType, LocalDate date) {
 
         if (calendar.containsKey(date.minusDays(1))){
             ProjectDay prevDay = calendar.get(date.minusDays(1));
@@ -55,7 +51,7 @@ public class Reimburser {
         }
     }
 
-    private static void addLastDay(Cost cost, DayType dayType, LocalDate date) {
+    private void addLastDay(Cost cost, DayType dayType, LocalDate date) {
         // if day after is already in calendar
         if (calendar.containsKey(date.plusDays(1))) {
 
@@ -71,7 +67,7 @@ public class Reimburser {
     }
 
 
-    private static void addFullDay(Cost cost, LocalDate date) {
+    private void addFullDay(Cost cost, LocalDate date) {
         if (calendar.containsKey(date)) {
             ProjectDay day = calendar.get(date);
             day.setDayType(DayType.FULL);
@@ -84,7 +80,7 @@ public class Reimburser {
 
 
 
-    private static int getTotal() {
+    private int getTotal() {
         int total = 0;
 
         // get the total of all days in the calendar
