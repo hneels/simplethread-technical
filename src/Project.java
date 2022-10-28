@@ -1,22 +1,19 @@
 import java.time.LocalDate;
 
 
-/* A Project object representing a start date, end date, and type of city (low-cost or high-cost*/
+/* A Project object represents a start date, end date, and city cost (low-cost or high-cost*/
 public class Project {
 
-    public enum Type {
-        LOW,
-        HIGH
-    }
 
     private final LocalDate startDate;
     private final LocalDate endDate;
-    private final Type type;
+    private final Cost cost;
 
-    public Project(LocalDate startDate, LocalDate endDate, Type type) {
+
+    public Project(LocalDate startDate, LocalDate endDate, Cost cost) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.type = type;
+        this.cost = cost;
     }
 
     public LocalDate getStartDate() {
@@ -25,8 +22,8 @@ public class Project {
     public LocalDate getEndDate() {
         return endDate;
     }
-    public Type getType() {
-        return type;
+    public Cost getCost() {
+        return cost;
     }
 
 
