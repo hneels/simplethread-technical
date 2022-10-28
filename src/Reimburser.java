@@ -24,14 +24,16 @@ public class Reimburser {
             } else {
                 addFirstDay(projectCost, DayType.TRAVEL, startDate);
                 addLastDay(projectCost, DayType.TRAVEL, endDate);
+
+                // add middle days
+                LocalDate tempDate = startDate.plusDays(1);
+                while (endDate.compareTo(tempDate) > 0) {
+                    addFullDay(projectCost, tempDate);
+                    tempDate = tempDate.plusDays(1);
+                }
             }
 
-            // add middle days
-            LocalDate tempDate = startDate.plusDays(1);
-            while (endDate.compareTo(tempDate) > 0) {
-                addFullDay(projectCost, tempDate);
-                tempDate = tempDate.plusDays(1);
-            }
+
         }
         return getTotal();
     }
