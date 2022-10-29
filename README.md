@@ -1,5 +1,6 @@
 # Simple Thread Technical Exercise
 
+## Requirements
 You have a set of projects, and you need to calculate a reimbursement amount for the set. Each project has a start date and an end date. The first day of a project and the last day of a project are always "travel" days. Days in the middle of a project are "full" days. There are also two types of cities a project can be in, high cost cities and low cost cities.
 
 A few rules:
@@ -36,6 +37,10 @@ Set 4:
 - Project 4: High Cost City Start Date: 9/2/15 End Date: 9/3/15
 
 <hr>
+
+## How to Run
+Run the main method in Main.java, which tests the Reimburser class's reimburse() method on the provided project sets.
+
 
 ## Assumptions & Interpretations
 
