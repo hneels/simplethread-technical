@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,7 +18,7 @@ public class Reimburser {
             Cost projectCost = project.getCost();
 
             // if the project is < 3 days, there are no travel days
-            if (endDate.compareTo(startDate) < 2) {
+            if (ChronoUnit.DAYS.between(startDate, endDate) < 2) {
                 addFirstDay(projectCost, DayType.FULL, startDate);
                 addLastDay(projectCost, DayType.FULL, endDate);
 
