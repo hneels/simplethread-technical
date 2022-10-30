@@ -1,7 +1,7 @@
 # Simple Thread Technical Exercise
 
 
-**Note: please select the "gradle-testing" branch above to see an extension of this exercise with JUnit testing in a Gradle project.**
+**Note: the "gradle-testing" branch extends this exercise with JUnit testing. The "gradle-testing" branch is more recently updated with bug fixes.**
 
 ## Requirements
 You have a set of projects, and you need to calculate a reimbursement amount for the set. Each project has a start date and an end date. The first day of a project and the last day of a project are always "travel" days. Days in the middle of a project are "full" days. There are also two types of cities a project can be in, high cost cities and low cost cities.
