@@ -50,13 +50,10 @@ Set 4:
 
 ## Assumptions & Interpretations
 
-- when adding a project, if it is < 3 days, add all days at full cost
-
-- when adding a new project, if the day immediately BEFORE the first day is already in the calendar, that before day becomes a full day if it had been a travel day (at the OTHER project's rate) and the first day of this project becomes a full day
-
-- if the day immediately after the last day is already in the calendar, that day becomes a full day if it had been a travel day (at the OTHER project's rate) and the last day of this project becomes a full day
-
-- if a low cost project and high cost project overlap, the high cost wins out
+- A one- or two-day project has only full days, no travel days
+- When low cost and high cost projects overlap, the high cost takes precedence, regardless of project order in the set
+- First and last days of a project become full days if they are adjacent to full OR travel days belonging to another project, and that other project's adjacent day becomes a full day at the other project's rate.
+    - see tests in src.test.java.ReimburserTest for examples
 
 ## Desired Outcomes from Sample Sets
 
