@@ -72,7 +72,7 @@ class ReimburserTest {
                 new Project(sept3, sept5, Cost.HIGH),
                 new Project(sept1, sept3, Cost.LOW)
         });
-        assertEquals(order1Result, order2Result);
+        assertEquals(345, order1Result);
         assertEquals(345, order2Result);
     }
 
@@ -120,8 +120,8 @@ class ReimburserTest {
     }
 
     /* Test 9: nested projects should have consistent behavior, regardless of project order in set.
-    Travel days should convert to full days when they push up against another project, even when that project
-     encloses, or is enclosed by, another project. This test identified a bug! */
+    * Travel days should convert to full days when they push up against another project, even when that project
+    * encloses, or is enclosed by, another project. This test identified a bug! */
     @Test
     void projectWithinProject() {
         int outerProjectFirst = new Reimburser().reimburse(new Project[] {
@@ -135,6 +135,19 @@ class ReimburserTest {
         });
         assertEquals(405, outerProjectFirst);
         assertEquals(405, innerProjectFirst);
+    }
+
+    /* Test 10: when projects share 2+ days, all overlapping days AND adjacent days should become full days
+    * at the higher rate */
+    @Test
+    void overlappingMultipleDays() {
+        int result = new Reimburser().reimburse(new Project[] {
+                new Project(sept1, sept1, Cost.LOW),
+                new Project(sept2, sept4, Cost.HIGH),
+                new Project(sept3, sept5, Cost.LOW)
+                // pattern of days will be: LF, HF, HF, HF, LF
+        });
+        assertEquals(405, result);
     }
 
 

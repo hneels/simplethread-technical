@@ -23,9 +23,6 @@ public class Reimburser {
                 addEdgeDay(projectCost, DayType.FULL, endDate);
 
             } else {
-//                addFirstDay(projectCost, DayType.TRAVEL, startDate);
-//                addLastDay(projectCost, DayType.TRAVEL, endDate);
-
                 addEdgeDay(projectCost, DayType.TRAVEL, startDate);
                 addEdgeDay(projectCost, DayType.TRAVEL, endDate);
 
@@ -40,7 +37,7 @@ public class Reimburser {
         return getTotal();
     }
 
-    /* for first day and last day of a project, both adjacent days are checked for push up against other projects.
+    /* for first day and last day of a project, both adjacent days are checked for 'push-up' against other projects.
     This ensures that projects nested within each other (e.g. Test 9) have consistent behavior */
     private void addEdgeDay(Cost cost, DayType dayType, LocalDate date) {
 
@@ -49,52 +46,18 @@ public class Reimburser {
             calendar.put(date, new ProjectDay(dayType, cost));
 
         } else {
+            // previous day, if occupied, becomes a FULL day at the previous project's cost rate
             if (calendar.containsKey(date.minusDays(1))) {
-                ProjectDay prevDay = calendar.get(date.minusDays(1));
-                // previous day becomes a FULL day at the previous project's cost rate
-                prevDay.setDayType(DayType.FULL);
+                calendar.get(date.minusDays(1)).setDayType(DayType.FULL);
             }
+            // next day, if occupied, becomes a FULL day at the next project's cost rate
             if (calendar.containsKey(date.plusDays(1))) {
-                ProjectDay nextDay = calendar.get(date.plusDays(1));
-                // next day becomes a FULL day at the next project's cost rate
-                nextDay.setDayType(DayType.FULL);
+                calendar.get(date.plusDays(1)).setDayType(DayType.FULL);
             }
-            // add edge day as a FULL day, regardless of parameter dayType
+            // add edge day as a FULL day, even if parameter dayType was TRAVEL
             addFullDay(cost, date);
         }
     }
-
-
-    // add the first day of a project (could be at travel rate OR full rate, depending on project length)
-    private void addFirstDay(Cost cost, DayType dayType, LocalDate date) {
-
-        if (calendar.containsKey(date.minusDays(1))){
-            ProjectDay prevDay = calendar.get(date.minusDays(1));
-            // previous day becomes a FULL day at the previous project's cost rate
-            prevDay.setDayType(DayType.FULL);
-            // add end day as a FULL day, regardless of parameter dayType
-            addFullDay(cost, date);
-
-        } else {
-            calendar.put(date, new ProjectDay(dayType, cost));
-        }
-    }
-
-    private void addLastDay(Cost cost, DayType dayType, LocalDate date) {
-        // if day after is already in calendar
-        if (calendar.containsKey(date.plusDays(1))) {
-
-            ProjectDay nextDay = calendar.get(date.plusDays(1));
-            // next day becomes a FULL day at the next project's cost rate
-            nextDay.setDayType(DayType.FULL);
-            // add end day as a FULL day, regardless of parameter dayType
-            addFullDay(cost, date);
-
-        } else {
-            calendar.put(date, new ProjectDay(dayType, cost));
-        }
-    }
-
 
     private void addFullDay(Cost cost, LocalDate date) {
         if (calendar.containsKey(date)) {
@@ -108,7 +71,6 @@ public class Reimburser {
     }
 
 
-
     private int getTotal() {
         System.out.println("------");
 
@@ -120,6 +82,7 @@ public class Reimburser {
             ProjectDay day = entry.getValue();
 
             System.out.printf("Date: %s | %s%n", date, day);
+
             if (day.getDayType() == DayType.TRAVEL) {
                 total += 45;
             } else {
@@ -132,5 +95,4 @@ public class Reimburser {
         }
         return total;
     }
-
 }
