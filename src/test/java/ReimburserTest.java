@@ -61,7 +61,7 @@ class ReimburserTest {
         assertEquals(245, set4Result);
     }
 
-    // order of overlapping LOW & HIGH projects in the set should not matter for calculating the result
+    // test 5: order of overlapping LOW & HIGH projects in the set should not matter for calculating the result
     @Test
     void orderShouldNotMatter() {
         int order1Result = new Reimburser().reimburse(new Project[] {
@@ -76,7 +76,7 @@ class ReimburserTest {
         assertEquals(345, order2Result);
     }
 
-    // any time a LOW and HIGH project overlap on a travel day, that day should become a FULL HIGH day
+    // test 6: any time a LOW and HIGH project overlap on a travel day, that day should become a FULL HIGH day
     @Test
     void highCostTakesPrecedence() {
         int result = new Reimburser().reimburse(new Project[] {
@@ -87,7 +87,7 @@ class ReimburserTest {
         assertEquals(525, result);
     }
 
-    /* when projects do not overlap, but exist on adjacent days, the travel days should become full days
+    /* test 7: when projects do not overlap, but exist on adjacent days, the travel days should become full days
     at the same cost as the rest of their project */
     @Test
     void adjacentTravelDaysBecomeFull() {
@@ -106,9 +106,8 @@ class ReimburserTest {
         assertEquals(0, result);
     }
 
-    /* reimburser should work even if project dates span end of month or year,
-    e.g. Dec 31st 2021 to Jan 3rd 2022
-     */
+    /* test 8: reimburser should work even if project dates span end of month or year,
+    e.g. Dec 31st 2021 to Jan 3rd 2022. This test identified a bug!  */
     @Test
     void monthYearEndIsValid() {
         int result = new Reimburser().reimburse(new Project[] {
@@ -119,4 +118,24 @@ class ReimburserTest {
         });
         assertEquals(195, result);
     }
+
+    /* Test 9: nested projects should have consistent behavior, regardless of project order in set.
+    Travel days should convert to full days when they push up against another project, even when that project
+     encloses, or is enclosed by, another project. This test identified a bug! */
+    @Test
+    void projectWithinProject() {
+        int outerProjectFirst = new Reimburser().reimburse(new Project[] {
+                new Project(sept2, sept6, Cost.LOW),
+                new Project(sept3, sept5, Cost.HIGH)
+        });
+        int innerProjectFirst = new Reimburser().reimburse(new Project[] {
+                new Project(sept3, sept5, Cost.HIGH),
+                new Project(sept2, sept6, Cost.LOW),
+
+        });
+        assertEquals(405, outerProjectFirst);
+        assertEquals(405, innerProjectFirst);
+    }
+
+
 }
